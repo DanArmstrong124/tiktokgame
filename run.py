@@ -1,17 +1,3 @@
-my_webpage = """
-Content Type: text/html\n\n
-
-<html>
-<head>
-<title>Python-generated text!</title>
-</head>
-<body>
-<h1>I just made an HTML page with Python!</h1>
-</body>
-</html>
-"""
-
-
 from TikTokLive import TikTokLiveClient
 from TikTokLive.types.events import *
 
