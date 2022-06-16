@@ -1,5 +1,10 @@
 from TikTokLive import TikTokLiveClient
 from TikTokLive.types.events import *
+from bs4 import BeautifulSoup as bs
+
+import os
+
+import re
 
 # Instantiate the client with the user's username
 client: TikTokLiveClient = TikTokLiveClient(
@@ -86,3 +91,8 @@ if __name__ == '__main__':
     # Run the client and block the main thread
     # await client.start() to run non-blocking
     client.run()
+
+
+base=os.path.dirname(os.path.abspath(__file__))
+html=open(os.path.join(base, ‘index’))
+soup=bs(html, ‘html.parser’)
