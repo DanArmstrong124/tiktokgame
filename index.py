@@ -1,5 +1,19 @@
+my_webpage = """
+Content Type: text/html\n\n
+
+<html>
+<head>
+<title>Python-generated text!</title>
+</head>
+<body>
+<h1>I just made an HTML page with Python!</h1>
+</body>
+</html>
+"""
+
+
 from TikTokLive import TikTokLiveClient
-from TikTokLive.types.events import CommentEvent, ConnectEvent
+from TikTokLive.types.events import *
 
 # Instantiate the client with the user's username
 client: TikTokLiveClient = TikTokLiveClient(
@@ -47,6 +61,32 @@ client: TikTokLiveClient = TikTokLiveClient(
 async def on_connect(_: ConnectEvent):
     print("Connected to Room ID:", client.room_id)
 
+@client.on("like")
+async def on_like(event: LikeEvent):
+    print(f"{event.user.nickname} liked the stream!")
+
+@client.on("join")
+async def on_join(event: JoinEvent):
+    print(f"{event.user.nickname} joined the stream!")
+
+@client.on("gift")
+async def on_gift(event: GiftEvent):
+    # If it's type 1 and the streak is over
+    if event.gift.gift_type == 1:
+        if event.gift.repeat_end == 1:
+            print(f"{event.user.uniqueId} sent {event.gift.repeat_count}x \"{event.gift.extended_gift.name}\"")
+
+    # It's not type 1, which means it can't have a streak & is automatically over
+    elif event.gift.gift_type != 1:
+        print(f"{event.user.uniqueId} sent \"{event.gift.extended_gift.name}\"")
+
+@client.on("follow")
+async def on_follow(event: FollowEvent):
+    print(f"{event.user.nickname} followed the streamer!")
+
+@client.on("share")
+async def on_share(event: ShareEvent):
+    print(f"{event.user.nickname} shared the streamer!")
 
 # Notice no decorator?
 async def on_comment(event: CommentEvent):
